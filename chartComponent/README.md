@@ -168,17 +168,6 @@ pieChartOptions: ChartOptions = {
 ✅ **Code Quality**: TypeScript interfaces, proper naming, error handling  
 ✅ **Documentation**: Comprehensive README and inline comments  
 
-## Screenshots
-
-To capture screenshots of the charts:
-
-1. Run the application: `npm start`
-2. Open `http://localhost:4200/` in your browser
-3. Take screenshots of each chart type:
-   - Line Chart
-   - Column Chart
-   - Pie Chart
-4. Save screenshots in a `screenshots/` folder
 
 ## Browser Support
 
@@ -187,10 +176,4 @@ To capture screenshots of the charts:
 - Safari (latest)
 - Edge (latest)
 
-## License
 
-This project is created for educational purposes as part of an Angular assignment.
-
-## Author
-
-Built as a custom Angular chart component implementation without external libraries.
