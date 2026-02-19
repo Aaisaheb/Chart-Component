@@ -1,0 +1,157 @@
+<div class="chart-container" *ngIf="chartOptions">
+  <h2 class="chart-title">{{ chartOptions.title }}</h2>
+  
+  <div class="chart-wrapper">
+    <svg [attr.width]="width" [attr.height]="height" class="chart-svg">
+      <!-- Background -->
+      <rect width="100%" height="100%" fill="#ffffff" rx="8"/>
+      
+      <!-- Line Chart -->
+      <g *ngIf="chartOptions.type === 'line'" class="line-chart">
+        <!-- Grid lines -->
+        <g class="grid-lines">
+          <line *ngFor="let i of gridLines"
+                [attr.x1]="padding"
+                [attr.y1]="padding + (i * chartHeight / 4)"
+                [attr.x2]="width - padding"
+                [attr.y2]="padding + (i * chartHeight / 4)"
+                stroke="#e0e0e0"
+                stroke-width="1"
+                stroke-dasharray="2,2"/>
+        </g>
+        
+        <!-- Y-axis labels -->
+        <g class="y-axis-labels">
+          <text *ngFor="let i of gridLines; let idx = index"
+                [attr.x]="padding - 10"
+                [attr.y]="padding + (idx * chartHeight / 4) + 4"
+                text-anchor="end"
+                fill="#666"
+                font-size="12">
+            {{ maxValue - (idx * maxValue / 4) | number:'1.0-0' }}
+          </text>
+        </g>
+        
+        <!-- X-axis labels -->
+        <g class="x-axis-labels">
+          <text *ngFor="let item of normalizedData; let i = index"
+                [attr.x]="getLineX(i)"
+                [attr.y]="height - padding + 20"
+                text-anchor="middle"
+                fill="#666"
+                font-size="12">
+            {{ item.name }}
+          </text>
+        </g>
+        
+        <!-- Line path -->
+        <polyline [attr.points]="linePoints"
+                  fill="none"
+                  stroke="#667eea"
+                  stroke-width="3"
+                  class="line-path"/>
+        
+        <!-- Data points -->
+        <g class="data-points">
+          <circle *ngFor="let item of normalizedData; let i = index"
+                  [attr.cx]="getLineX(i)"
+                  [attr.cy]="getLineY(i)"
+                  r="6"
+                  [attr.fill]="item.color"
+                  [attr.stroke]="item.color"
+                  stroke-width="2"
+                  class="data-point">
+            <title>{{ item.name }}: {{ item.value }}</title>
+          </circle>
+        </g>
+      </g>
+      
+      <!-- Column Chart -->
+      <g *ngIf="chartOptions.type === 'column'" class="column-chart">
+        <!-- Grid lines -->
+        <g class="grid-lines">
+          <line *ngFor="let i of gridLines"
+                [attr.x1]="padding"
+                [attr.y1]="padding + (i * chartHeight / 4)"
+                [attr.x2]="width - padding"
+                [attr.y2]="padding + (i * chartHeight / 4)"
+                stroke="#e0e0e0"
+                stroke-width="1"
+                stroke-dasharray="2,2"/>
+        </g>
+        
+        <!-- Y-axis labels -->
+        <g class="y-axis-labels">
+          <text *ngFor="let i of gridLines; let idx = index"
+                [attr.x]="padding - 10"
+                [attr.y]="padding + (idx * chartHeight / 4) + 4"
+                text-anchor="end"
+                fill="#666"
+                font-size="12">
+            {{ maxValue - (idx * maxValue / 4) | number:'1.0-0' }}
+          </text>
+        </g>
+        
+        <!-- Columns -->
+        <g class="columns">
+          <rect *ngFor="let item of normalizedData; let i = index"
+                [attr.x]="getColumnX(i)"
+                [attr.y]="getColumnY(i)"
+                [attr.width]="columnWidth"
+                [attr.height]="getColumnHeight(i)"
+                [attr.fill]="item.color"
+                class="column-bar">
+            <title>{{ item.name }}: {{ item.value }}</title>
+          </rect>
+        </g>
+        
+        <!-- X-axis labels -->
+        <g class="x-axis-labels">
+          <text *ngFor="let item of normalizedData; let i = index"
+                [attr.x]="getColumnX(i) + columnWidth / 2"
+                [attr.y]="height - padding + 20"
+                text-anchor="middle"
+                fill="#666"
+                font-size="12">
+            {{ item.name }}
+          </text>
+        </g>
+      </g>
+      
+      <!-- Pie Chart -->
+      <g *ngIf="chartOptions.type === 'pie'" class="pie-chart">
+        <!-- Pie slices -->
+        <g class="pie-slices">
+          <path *ngFor="let slice of piePaths; let i = index"
+                [attr.d]="slice.path"
+                [attr.fill]="slice.color"
+                class="pie-slice">
+            <title>{{ slice.name }}: {{ slice.value | number:'1.0-2' }} ({{ slice.percentage | number:'1.1-1' }}%)</title>
+          </path>
+        </g>
+        
+        <!-- Pie labels -->
+        <g class="pie-labels">
+          <text *ngFor="let slice of piePaths; let i = index"
+                [attr.x]="getPieLabelX(i)"
+                [attr.y]="getPieLabelY(i)"
+                text-anchor="middle"
+                fill="#333"
+                font-size="14"
+                font-weight="bold">
+            {{ slice.percentage | number:'1.0-0' }}%
+          </text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  
+  <!-- Legend -->
+  <div class="legend">
+    <div *ngFor="let item of normalizedData" class="legend-item">
+      <span class="legend-color" [style.background-color]="item.color"></span>
+      <span class="legend-label">{{ item.name }}</span>
+      <span class="legend-value">{{ item.value }}</span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+<div class="app-container">
+  <header class="app-header">
+    <h1>Custom Angular Chart Component</h1>
+    <p class="subtitle">A reusable chart component supporting Line, Column, and Pie charts</p>
+  </header>
+
+  <main class="charts-grid">
+    <!-- Line Chart -->
+    <io-chart [chartOptions]="lineChartOptions"></io-chart>
+
+    <!-- Column Chart -->
+    <io-chart [chartOptions]="columnChartOptions"></io-chart>
+
+    <!-- Pie Chart -->
+    <io-chart [chartOptions]="pieChartOptions"></io-chart>
+
+    <!-- Additional Examples -->
+    <io-chart [chartOptions]="quarterlyChartOptions"></io-chart>
+
+    <io-chart [chartOptions]="expenseChartOptions"></io-chart>
+
+    <io-chart [chartOptions]="growthChartOptions"></io-chart>
+  </main>
+</div>
